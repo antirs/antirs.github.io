@@ -2,3 +2,7 @@
 	path = sh.wrap
 	url = https://github.com/antirs/sh.wrap
 	branch = gh-pages
+[submodule "sh.wrap2"]
+	path = sh.wrap2
+	url = https://github.com/antirs/test-docker-action
+	branch = gh-pages
