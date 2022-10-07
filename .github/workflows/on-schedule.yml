@@ -1,0 +1,41 @@
+name: "Update git submodules"
+
+permissions: {}
+
+concurrency:
+  group: "${{ github.ref }}-site"
+  cancel-in-progress: true
+
+on:
+  schedule:
+    - cron:  "*/5 * * * *"
+  repository_dispatch:
+    types:
+      - "update-submodules-ghpages"
+
+jobs:
+  check-submodules:
+    runs-on: ubuntu-latest
+    outputs:
+      status: "${{ steps.check.outputs.status }}"
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v3
+      - id: check
+        name: "Check submodules"
+        run: |
+          git submodule update --recursive --init --force --remote
+          status=$(git diff --submodule | wc -l)
+          echo status="$status" >> $GITHUB_OUTPUT
+  update-submodules-ghpages:
+    if: needs.check-submodules.outputs.status != '0'
+    permissions:
+      contents: write
+    needs:
+      - check-submodules
+    uses: antirs/sh.wrap/.github/workflows/update-submodules.yml@actions
+    with:
+      run_id: "update-submodules-ghpages"
+      git_repo: "https://github.com/antirs/antirs.github.io"
+      git_branch: "main"
+      git_repo_dir: "./antirs.github.io"

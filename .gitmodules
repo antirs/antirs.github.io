@@ -1,8 +1,4 @@
 [submodule "sh.wrap"]
 	path = sh.wrap
 	url = https://github.com/antirs/sh.wrap
-	branch = gh-pages
-[submodule "project"]
-	path = project
-	url = https://github.com/antirs/sh.wrap
-	branch = gh-pages-project
+	branch = gh-pages/sh.wrap
